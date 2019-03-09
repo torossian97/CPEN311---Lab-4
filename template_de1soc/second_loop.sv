@@ -1,0 +1,121 @@
+module second_loop (
+                   input logic clk,
+                   input logic start,
+                   input logic [7:0] s_ram_data_out,
+                   input logic [23:0] secret_key,
+                   output logic wren,
+                   output logic finish,
+                   output logic [7:0] data,
+						 output logic [7:0] data_read_i,
+                   output logic [7:0] address
+                  );
+
+    parameter IDLE                = 6'b0000_10;
+    parameter REQUEST_SRAM_READ   = 6'b0001_00; 
+    parameter READ_SRAM           = 6'b0010_00;
+    parameter COMPUTE_MOD         = 6'b0011_00;
+    parameter COMPUTE_SECRET_ADDR = 6'b0100_00;
+    parameter COMPUTE_J           = 6'b0101_00;
+    parameter REQUEST_SRAM_READ_J = 6'b0110_00;
+    parameter READ_SRAM_J         = 6'b0111_00;
+    parameter PRE_WRITE_J         = 6'b1000_00;
+    parameter WRITE_J             = 6'b1001_01;
+    parameter PRE_WRITE_I         = 6'b1010_00;
+    parameter WRITE_I             = 6'b1011_01;
+    parameter COMPARE_INDX        = 6'b1100_00;
+    parameter FINISH              = 6'b1101_10;
+
+    logic [5:0] state;
+
+    //logic [7:0] data_read_i;
+    logic [7:0] data_read_j;
+    logic [7:0] secret_address;
+    logic [7:0] i;
+    logic [7:0] j;
+
+    logic [7:0] mod_op;
+
+    assign wren   = state[0];
+    assign finish = state[1];
+
+    always_ff @(posedge clk) begin
+        case (state)
+            IDLE: begin
+                    if (start == 1'b1) begin
+                        state <= REQUEST_SRAM_READ;
+                    end
+                    else begin
+                        state <= IDLE;
+                        i <= 8'b0;
+                        j <= 8'b0;
+                    end
+                  end
+            REQUEST_SRAM_READ: begin
+                                address <= i;
+                                data    <= 1'b0;
+                                state   <= READ_SRAM; 
+                               end
+            READ_SRAM: begin
+                        state <= COMPUTE_MOD;
+                       end
+            COMPUTE_MOD: begin
+				                data_read_i <= s_ram_data_out;
+									 if(i==1) 
+										state <= FINISH;
+									else begin
+                            mod_op <= i % 8'b00000011;
+                            state <= COMPUTE_SECRET_ADDR; 
+									end
+								 end
+            COMPUTE_SECRET_ADDR: begin
+                                    if (mod_op == 8'b00000000)
+                                       secret_address <= secret_key[23:16];
+                                    else if(mod_op == 8'b00000001)
+                                       secret_address <= secret_key[15:8];
+                                    else 
+                                       secret_address <= secret_key[7:0];
+                                    state <= COMPUTE_J;
+                                 end
+            COMPUTE_J: begin
+                            j <= j + data_read_i + secret_address;
+                            state <= REQUEST_SRAM_READ_J;
+                       end
+            REQUEST_SRAM_READ_J: begin
+                                    address <= j;
+                                    data    <= 1'b0;
+                                    state   <= READ_SRAM_J; 
+                                 end
+            READ_SRAM_J: begin
+                            data_read_j <= s_ram_data_out;
+                            state <= PRE_WRITE_J;
+                       end
+            PRE_WRITE_J: begin
+                            address <= j;
+                            data    <= data_read_i;
+                            state   <= WRITE_J;
+                         end
+            WRITE_J: begin
+                        state <= PRE_WRITE_I;
+                     end
+            PRE_WRITE_I: begin
+                            address <= i;
+                            data    <= data_read_j;
+                            state   <= WRITE_I;
+                         end
+            WRITE_I: begin
+                            state <= COMPARE_INDX;
+                            i     <= i + 1'b1;  
+                     end
+            COMPARE_INDX: begin
+                          if (i == 2)
+                            state <= FINISH;
+                        else
+                            state <= REQUEST_SRAM_READ;
+                          end
+            FINISH: begin
+                        state <= FINISH;
+                    end
+            default: state <= IDLE;
+        endcase
+    end
+endmodule

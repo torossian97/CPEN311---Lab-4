@@ -1,0 +1,2 @@
+Info (10281): Verilog HDL Declaration information at second_loop.sv(7): object "finish" differs only in case from object "FINISH" in the same scope
+Warning (10268): Verilog HDL information at memory_write.sv(33): always construct contains both blocking and non-blocking assignments

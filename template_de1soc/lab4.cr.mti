@@ -1,0 +1,52 @@
+C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa.vhd
+Model Technology ModelSim ALTERA vcom 10.3c Compiler 2014.09 Sep 20 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity ksa
+-- Compiling architecture rtl of ksa
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory.v {1 {vlog -work work -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory.v
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module s_memory
+
+Top level modules:
+	s_memory
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module memory_write_tb
+
+Top level modules:
+	memory_write_tb
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v {1 {vlog -work work -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module SevenSegmentDisplayDecoder
+
+Top level modules:
+	SevenSegmentDisplayDecoder
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module second_loop_tb
+
+Top level modules:
+	second_loop_tb
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv {1 {vlog -work work -sv -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module memory_write
+
+Top level modules:
+	memory_write
+
+} {} {}} C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v {1 {vlog -work work -stats=none C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v
+Model Technology ModelSim ALTERA vlog 10.3c Compiler 2014.09 Sep 20 2014
+-- Compiling module s_memory
+
+Top level modules:
+	s_memory
+
+} {} {}}

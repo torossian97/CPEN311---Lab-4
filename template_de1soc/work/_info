@@ -1,0 +1,166 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/altera/14.1
+vksa
+Z0 DXx6 sv_std 3 std 0 22 <EOTafDcUY:cQeO^ICn]m3
+!s110 1552073876
+!i10b 1
+!s100 W8SglVmNenEZmf_Peoj>Y2
+I3^7N6F:_lLbOFHamPzb0J1
+Z1 V`JN@9S9cnhjKRR_L]QIcM3
+!s105 ksa_sv_sv_unit
+S1
+Z2 dC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc
+w1552073302
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa_sv.sv
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa_sv.sv
+L0 1
+Z3 OV;L;10.3c;59
+r1
+!s85 0
+31
+!s108 1552073876.606000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa_sv.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/ksa_sv.sv|
+!i113 1
+Z4 o-work work -sv
+vmemory_write
+R0
+Z5 !s110 1552073877
+!i10b 1
+!s100 ;;4AX1YbJQQ3JU>lkFJ8L2
+InCG97130AK3:>908CmkK_0
+R1
+!s105 memory_write_sv_unit
+S1
+R2
+w1552007614
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv
+L0 12
+R3
+r1
+!s85 0
+31
+!s108 1552073877.012000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write.sv|
+!i113 1
+R4
+vmemory_write_tb
+R0
+R5
+!i10b 1
+!s100 bGDlnTWSBkP:Rl7[g`^2S2
+Ie=IUEOIcO@@1KFI^Y8RM52
+R1
+!s105 memory_write_tb_sv_unit
+S1
+R2
+w1552003492
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1552073877.444000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/memory_write_tb.sv|
+!i113 1
+R4
+vs_memory
+Z6 !s110 1552073878
+!i10b 1
+!s100 `cnG=O?1V=?CoW@z7oUU>1
+IXnEM8c<T<B4lYSja5hQXe2
+R1
+R2
+w1551992044
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v
+L0 35
+R3
+r1
+!s85 0
+31
+!s108 1552073878.272000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/s_memory_bb.v|
+!i113 1
+Z7 o-work work
+vsecond_loop
+R0
+Z8 !s110 1552073879
+!i10b 1
+!s100 S9UIS9R9LanU`U7=ohY1j2
+I4]cjfzI?9]`BVc<D]lYb`0
+R1
+!s105 second_loop_sv_unit
+S1
+R2
+w1552069275
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop.sv
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop.sv
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1552073879.046000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop.sv|
+!i113 1
+R4
+vsecond_loop_tb
+R0
+R8
+!i10b 1
+!s100 jCkh3?aY4A5IV9[NIbG^61
+IdL`BX6BRToVm7z>4Kdg0E2
+R1
+!s105 second_loop_tb_sv_unit
+S1
+R2
+w1552073869
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1552073879.457000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/second_loop_tb.sv|
+!i113 1
+R4
+vSevenSegmentDisplayDecoder
+R6
+!i10b 1
+!s100 04cdEA1ld]g_`l4zO2j1S0
+ICAH=7?OA295]0B74PRbm^1
+R1
+R2
+w1295647312
+8C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v
+FC:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1552073878.663000
+!s107 C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/Gene/Documents/UBC300/CPEN311/Lab4/template_de1soc/SevenSegmentDisplayDecoder.v|
+!i113 1
+R7
+n@seven@segment@display@decoder
