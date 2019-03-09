@@ -6,33 +6,36 @@ module second_loop (
                    output logic wren,
                    output logic finish,
                    output logic [7:0] data,
-						 output logic [7:0] data_read_i,
                    output logic [7:0] address
                   );
 
-    parameter IDLE                = 6'b0000_10;
-    parameter REQUEST_SRAM_READ   = 6'b0001_00; 
-    parameter READ_SRAM           = 6'b0010_00;
-    parameter COMPUTE_MOD         = 6'b0011_00;
-    parameter COMPUTE_SECRET_ADDR = 6'b0100_00;
-    parameter COMPUTE_J           = 6'b0101_00;
-    parameter REQUEST_SRAM_READ_J = 6'b0110_00;
-    parameter READ_SRAM_J         = 6'b0111_00;
-    parameter PRE_WRITE_J         = 6'b1000_00;
-    parameter WRITE_J             = 6'b1001_01;
-    parameter PRE_WRITE_I         = 6'b1010_00;
-    parameter WRITE_I             = 6'b1011_01;
-    parameter COMPARE_INDX        = 6'b1100_00;
-    parameter FINISH              = 6'b1101_10;
+    parameter IDLE                = 7'b00000_10;
+    parameter REQUEST_SRAM_READ   = 7'b00001_00; 
+    parameter READ_SRAM           = 7'b00010_00;
+    parameter COMPUTE_MOD         = 7'b00011_00;
+    parameter COMPUTE_SECRET_ADDR = 7'b00100_00;
+    parameter COMPUTE_J           = 7'b00101_00;
+    parameter REQUEST_SRAM_READ_J = 7'b00110_00;
+    parameter READ_SRAM_J         = 7'b00111_00;
+    parameter PRE_WRITE_J         = 7'b01000_00;
+    parameter WRITE_J             = 7'b01001_01;
+    parameter PRE_WRITE_I         = 7'b01010_00;
+    parameter WRITE_I             = 7'b01011_01;
+    parameter COMPARE_INDX        = 7'b01100_00;
+    parameter FINISH              = 7'b01101_10;
+	 parameter WAIT_1              = 7'b01110_00;
+	 parameter WAIT_2              = 7'b01111_00;
+    parameter WAIT_1_J            = 7'b10000_00;
+	 parameter WAIT_2_J            = 7'b10001_00;
 
-    logic [5:0] state;
 
-    //logic [7:0] data_read_i;
+    logic [7:0] state;
+
+    logic [7:0] data_read_i;
     logic [7:0] data_read_j;
     logic [7:0] secret_address;
     logic [7:0] i;
     logic [7:0] j;
-
     logic [7:0] mod_op;
 
     assign wren   = state[0];
@@ -48,6 +51,7 @@ module second_loop (
                         state <= IDLE;
                         i <= 8'b0;
                         j <= 8'b0;
+								count <= 0;
                     end
                   end
             REQUEST_SRAM_READ: begin
@@ -55,17 +59,15 @@ module second_loop (
                                 data    <= 1'b0;
                                 state   <= READ_SRAM; 
                                end
-            READ_SRAM: begin
-                        state <= COMPUTE_MOD;
-                       end
+            READ_SRAM: state <= WAIT_1;
+				WAIT_1: state<= WAIT_2;
+				WAIT_2: begin
+						  state <= COMPUTE_MOD;
+            		  data_read_i <= s_ram_data_out;
+						  end           
             COMPUTE_MOD: begin
-				                data_read_i <= s_ram_data_out;
-									 if(i==1) 
-										state <= FINISH;
-									else begin
-                            mod_op <= i % 8'b00000011;
-                            state <= COMPUTE_SECRET_ADDR; 
-									end
+                           mod_op <= i % 8'b00000011;
+                           state <= COMPUTE_SECRET_ADDR; 
 								 end
             COMPUTE_SECRET_ADDR: begin
                                     if (mod_op == 8'b00000000)
@@ -85,10 +87,12 @@ module second_loop (
                                     data    <= 1'b0;
                                     state   <= READ_SRAM_J; 
                                  end
-            READ_SRAM_J: begin
-                            data_read_j <= s_ram_data_out;
-                            state <= PRE_WRITE_J;
-                       end
+            READ_SRAM_J: state <= WAIT_1_J;
+				WAIT_1_J: state <= WAIT_2_J;
+				WAIT_2_J: begin
+						  state <= PRE_WRITE_J;
+                    data_read_j <= s_ram_data_out;
+						  end  
             PRE_WRITE_J: begin
                             address <= j;
                             data    <= data_read_i;
@@ -107,7 +111,7 @@ module second_loop (
                             i     <= i + 1'b1;  
                      end
             COMPARE_INDX: begin
-                          if (i == 2)
+                          if (i == 255)
                             state <= FINISH;
                         else
                             state <= REQUEST_SRAM_READ;

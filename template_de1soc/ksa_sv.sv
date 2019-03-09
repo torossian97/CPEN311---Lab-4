@@ -47,11 +47,10 @@ module ksa (
     logic [7:0] data;
     logic wren;
     logic [7:0] q;
-	 logic [7:0] data_read_test;
-	assign LEDR[7:0] = data_read_test;
+	assign LEDR[7:0] = 8'b0;
     SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
 	memory_write writter_1(.clk(clk), .start(start_writter), .finish(finish_writter), .address(writter_address), .wren(writter_wren), .data(writter_data));
-    second_loop loop_1(.data_read_i(data_read_test), .clk(clk), .start(start_second_loop), .finish(finish_second_loop), .secret_key(secret_key) ,.s_ram_data_out(q), .wren(looper_wren), .address(looper_address), .data(looper_data));
+    second_loop loop_1(.clk(clk), .start(start_second_loop), .finish(finish_second_loop), .secret_key(secret_key) ,.s_ram_data_out(q), .wren(looper_wren), .address(looper_address), .data(looper_data));
 
     s_memory memory_1(.clock(clk), .data(data), .address(address), .wren(wren), .q(q));
 
