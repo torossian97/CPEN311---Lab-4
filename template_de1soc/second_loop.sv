@@ -51,7 +51,6 @@ module second_loop (
                         state <= IDLE;
                         i <= 8'b0;
                         j <= 8'b0;
-								count <= 0;
                     end
                   end
             REQUEST_SRAM_READ: begin
