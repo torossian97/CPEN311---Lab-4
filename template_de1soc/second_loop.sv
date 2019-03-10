@@ -61,12 +61,12 @@ module second_loop (
                     end
                     else begin
                         state <= IDLE;
-                        i <= 8'b0;
+                        i <= 9'b0;
                         j <= 8'b0;
                     end
                   end
             REQUEST_SRAM_READ: begin
-                                address <= i;
+                                address <= i[7:0];
                                 data    <= 1'b0;
                                 state   <= READ_SRAM; 
                                end
@@ -122,7 +122,7 @@ module second_loop (
                             i     <= i + 1'b1;  
                      end
             COMPARE_INDX: begin
-                          if (i == 255)
+                          if (i == 0)
                             state <= FINISH;
                         else
                             state <= REQUEST_SRAM_READ;
