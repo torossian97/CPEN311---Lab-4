@@ -1,3 +1,15 @@
+/* second_loop: FSM Used to compute second loop of algorithm.
+ *
+ * The FSM operates using START/FINISH protocol to implement the following logic
+ * 
+ * j = 0
+ * for i = 0 to 255 {
+ *    j = (j + s[i] + secret_key[i mod keylength] ) mod 256 //keylength is 3 in our impl.
+ *    swap values of s[i] and s[j]
+ * }
+ *
+ * Where s defines in-memory, and s[i]/s[j] is address i/j of memory
+ */
 module second_loop (
                    input logic clk,
                    input logic start,
@@ -9,7 +21,7 @@ module second_loop (
                    output logic [7:0] address
                   );
 
-    parameter IDLE                = 7'b00000_10;
+    parameter IDLE                = 7'b00000_10; 
     parameter REQUEST_SRAM_READ   = 7'b00001_00; 
     parameter READ_SRAM           = 7'b00010_00;
     parameter COMPUTE_MOD         = 7'b00011_00;
@@ -116,7 +128,7 @@ module second_loop (
                             state <= REQUEST_SRAM_READ;
                           end
             FINISH: begin
-                        state <= FINISH;
+                        state <= IDLE;
                     end
             default: state <= IDLE;
         endcase
