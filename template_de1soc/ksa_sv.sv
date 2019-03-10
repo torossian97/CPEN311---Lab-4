@@ -25,11 +25,6 @@ module ksa (
     logic [6:0] ssOut;
     logic [3:0] nIn;
 	logic is_mem_init = 1'b0;
-	logic start_writter;
-	logic finish_writter;
-    logic start_second_loop;
-    logic finish_second_loop;
-    logic [23:0] secret_key = 24'b00000000_00000010_01001001; 
     
     assign clk = CLOCK_50;
     assign reset_n = KEY[3];
@@ -37,22 +32,60 @@ module ksa (
     
     logic [4:0] state;
    
+
+    // S-RAM init and signals
+    s_memory memory_1(.clock(clk), .data(s_data), .address(s_address), .wren(s_wren), .q(s_q));
+    logic [7:0] s_data;
+    logic [7:0] s_address;
+    logic s_wren;
+    logic [7:0] s_q;
+
+    // D-RAM init and signals
+    logic [7:0] d_q;
+    logic [7:0] d_address;
+    logic d_wren;
+    logic [7:0] d_data;
+
+    // E-ROM init and signals
+    logic [7:0] e_q;
+    logic [7:0] e_address;
+    
+    // Writter init and signals
+	memory_write writter_1(.clk(clk), .start(start_writter), .finish(finish_writter), .address(writter_address), .wren(writter_wren), .data(writter_data));
     logic [7:0] writter_address;
     logic [7:0] writter_data;
+	logic start_writter;
+	logic finish_writter;
+    logic writter_wren;
+
+    // Second Loop init and signals
+    second_loop loop_2(.clk(clk), .start(start_second_loop), .finish(finish_second_loop), .secret_key(secret_key), .s_ram_data_out(s_q), .wren(looper_wren), .address(looper_address), .data(looper_data));
     logic [7:0] looper_address;
     logic [7:0] looper_data;
-    logic writter_wren;
     logic looper_wren;
-    logic [7:0] address;
-    logic [7:0] data;
-    logic wren;
-    logic [7:0] q;
-	assign LEDR[7:0] = 8'b0;
-    SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
-	memory_write writter_1(.clk(clk), .start(start_writter), .finish(finish_writter), .address(writter_address), .wren(writter_wren), .data(writter_data));
-    second_loop loop_1(.clk(clk), .start(start_second_loop), .finish(finish_second_loop), .secret_key(secret_key) ,.s_ram_data_out(q), .wren(looper_wren), .address(looper_address), .data(looper_data));
+    logic start_second_loop;
+    logic finish_second_loop;
+    logic [23:0] secret_key = 24'b00000000_00000010_01001001; 
 
-    s_memory memory_1(.clock(clk), .data(data), .address(address), .wren(wren), .q(q));
+
+    // Third Loop init and signals
+    third_loop loop_3(.clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data));
+    logic start_third_loop;
+    logic finish_third_loop;
+    logic third_loop_d_wren;
+    logic [7:0] third_loop_s_address;
+    logic [7:0] third_loop_d_address;
+    logic [7:0] third_loop_e_address;
+    logic [7:0] third_loop_d_data;
+
+
+
+
+    // TODO: Remove debuf signals and algorithms
+
+    assign LEDR[7:0] = 8'b0;
+    
+    SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
 
 
     // Link start writter trigger to state output index 0
@@ -75,9 +108,9 @@ module ksa (
                       end
             WAIT_SRAM_DONE: begin
                                 if(!finish_writter) begin
-                                    address <= writter_address;
-                                    data    <= writter_data;
-                                    wren    <= writter_wren;
+                                    s_address <= writter_address;
+                                    s_data    <= writter_data;
+                                    s_wren    <= writter_wren;
                                     state   <= WAIT_SRAM_DONE;
                                 end
                                 else
@@ -90,18 +123,17 @@ module ksa (
                                 state <= CHECK_LOOPER;
                          end
             INIT_LOOPER: begin
-				                address <= looper_address;
-                            data    <= looper_data;
-                            wren    <= looper_wren;
-                            state <= WAIT_LOOPER;
+				                s_address <= looper_address;
+                                s_data    <= looper_data;
+                                s_wren    <= looper_wren;
+                                state <= WAIT_LOOPER;
                          end
             WAIT_LOOPER: begin
                             if(!finish_second_loop) begin
-                                address <= looper_address;
-                                data    <= looper_data;
-                                wren    <= looper_wren;
-										  state <= WAIT_LOOPER;
-
+                                s_address <= looper_address;
+                                s_data    <= looper_data;
+                                s_wren    <= looper_wren;
+								state <= WAIT_LOOPER;
                             end 
                             else 
                                 state <= FINISH;
