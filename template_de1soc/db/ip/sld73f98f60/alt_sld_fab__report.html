@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2019.03.09.13:51:19</td>
+    <td class="l">2019.03.11.12:22:24</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -92,10 +92,10 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     <td class="empty" rowspan="2"></td>
    </tr>
   </table>
-  <a name="module_presplit"> </a>
+  <a name="module_alt_sld_fab"> </a>
   <div>
    <hr/>
-   <h2>presplit</h2>altera_super_splitter v14.1
+   <h2>alt_sld_fab</h2>alt_sld_fab v15.0
    <br/>
    <br/>
    <br/>
@@ -105,16 +105,52 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <h2>Parameters</h2>
       <table>
        <tr>
+        <td class="parametername">DESIGN_HASH</td>
+        <td class="parametervalue">b8829dd7aae0c53eeb07</td>
+       </tr>
+       <tr>
+        <td class="parametername">NODE_COUNT</td>
+        <td class="parametervalue">3</td>
+       </tr>
+       <tr>
         <td class="parametername">MAX_WIDTH</td>
         <td class="parametervalue">28</td>
        </tr>
        <tr>
-        <td class="parametername">SEND_WIDTHS</td>
-        <td class="parametervalue">7</td>
+        <td class="parametername">SETTINGS</td>
+        <td class="parametervalue">{fabric sld dir agent mfr_code 110 type_code 3 version 1 instance 0 ir_width 5 psig f63706bb} {fabric sld dir agent mfr_code 110 type_code 3 version 1 instance 1 ir_width 5 psig f63706bb} {fabric sld dir agent mfr_code 110 type_code 3 version 1 instance 2 ir_width 5 psig f63706bb} </td>
        </tr>
        <tr>
-        <td class="parametername">RECEIVE_WIDTHS</td>
-        <td class="parametervalue">28</td>
+        <td class="parametername">CLOCKS</td>
+        <td class="parametervalue">{id {} } {id {} } {id {} } </td>
+       </tr>
+       <tr>
+        <td class="parametername">AGENTS</td>
+        <td class="parametervalue"></td>
+       </tr>
+       <tr>
+        <td class="parametername">EP_INFOS</td>
+        <td class="parametervalue">{hpath {s_memory:memory_1|altsyncram:altsyncram_component|altsyncram_2d32:auto_generated|sld_mod_ram_rom:mgl_prim2} } {hpath {d_memory:memory_3|altsyncram:altsyncram_component|altsyncram_oa32:auto_generated|sld_mod_ram_rom:mgl_prim2} } {hpath {e_memory:memory_2|altsyncram:altsyncram_component|altsyncram_lh02:auto_generated|sld_mod_ram_rom:mgl_prim2} } </td>
+       </tr>
+       <tr>
+        <td class="parametername">MIRROR</td>
+        <td class="parametervalue">0</td>
+       </tr>
+       <tr>
+        <td class="parametername">TOP_HUB</td>
+        <td class="parametervalue">1</td>
+       </tr>
+       <tr>
+        <td class="parametername">DEVICE_FAMILY</td>
+        <td class="parametervalue">CYCLONEV</td>
+       </tr>
+       <tr>
+        <td class="parametername">AUTO_DEVICE</td>
+        <td class="parametervalue">Unknown</td>
+       </tr>
+       <tr>
+        <td class="parametername">AUTO_DEVICE_SPEEDGRADE</td>
+        <td class="parametervalue">Unknown</td>
        </tr>
        <tr>
         <td class="parametername">deviceFamily</td>
@@ -135,19 +171,62 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_splitter"> </a>
+  <a name="module_alt_sld_fab_presplit"> </a>
   <div>
    <hr/>
-   <h2>splitter</h2>altera_sld_splitter v14.1
+   <h2>alt_sld_fab_presplit</h2>altera_super_splitter v15.0
+   <br/>
+   <br/>
+   <br/>
+   <table class="flowbox">
+    <tr>
+     <td class="parametersbox">
+      <h2>Parameters</h2>
+      <table>
+       <tr>
+        <td class="parametername">MAX_WIDTH</td>
+        <td class="parametervalue">28</td>
+       </tr>
+       <tr>
+        <td class="parametername">SEND_WIDTHS</td>
+        <td class="parametervalue">7 7 7</td>
+       </tr>
+       <tr>
+        <td class="parametername">RECEIVE_WIDTHS</td>
+        <td class="parametervalue">28 28 28</td>
+       </tr>
+       <tr>
+        <td class="parametername">deviceFamily</td>
+        <td class="parametervalue">UNKNOWN</td>
+       </tr>
+       <tr>
+        <td class="parametername">generateLegacySim</td>
+        <td class="parametervalue">false</td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>&#160;&#160;
+   <table class="flowbox">
+    <tr>
+     <td class="parametersbox">
+      <h2>Software Assignments</h2>(none)</td>
+    </tr>
+   </table>
+  </div>
+  <a name="module_alt_sld_fab_splitter"> </a>
+  <div>
+   <hr/>
+   <h2>alt_sld_fab_splitter</h2>altera_sld_splitter v15.0
    <br/>
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
       <td class="neighbor" rowspan="2">
-       <a href="#module_presplit">presplit</a>
+       <a href="#module_alt_sld_fab_presplit">alt_sld_fab_presplit</a>
       </td>
       <td class="from">pass&#160;&#160;</td>
-      <td class="main" rowspan="7">splitter</td>
+      <td class="main" rowspan="15">alt_sld_fab_splitter</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;nodes</td>
@@ -156,8 +235,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_sldfabric">sldfabric</a>
+      <td class="neighbor" rowspan="12">
+       <a href="#module_alt_sld_fab_sldfabric">alt_sld_fab_sldfabric</a>
       </td>
       <td class="from">clock_0&#160;&#160;</td>
      </tr>
@@ -170,6 +249,30 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td class="to">&#160;&#160;node_0</td>
      </tr>
+     <tr>
+      <td class="from">clock_1&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clock_1</td>
+     </tr>
+     <tr>
+      <td class="from">node_1&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;node_1</td>
+     </tr>
+     <tr>
+      <td class="from">clock_2&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clock_2</td>
+     </tr>
+     <tr>
+      <td class="from">node_2&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;node_2</td>
+     </tr>
     </table>
    </div>
    <br/>
@@ -181,7 +284,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <table>
        <tr>
         <td class="parametername">FRAGMENTS</td>
-        <td class="parametervalue">{{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 5 23} {irq irq out 1 1} {ir_out ir_out out 5 2} } clock clock assign {debug.controlledBy {link_0} } moduleassign {debug.virtualInterface.link_0 {debug.endpointLink {fabric sld index 1} } } } } </td>
+        <td class="parametervalue">{{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 5 23} {irq irq out 1 1} {ir_out ir_out out 5 2} } clock clock assign {debug.controlledBy {link_0} } moduleassign {debug.virtualInterface.link_0 {debug.endpointLink {fabric sld index 1} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 5 23} {irq irq out 1 1} {ir_out ir_out out 5 2} } clock clock assign {debug.controlledBy {link_1} } moduleassign {debug.virtualInterface.link_1 {debug.endpointLink {fabric sld index 2} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 5 23} {irq irq out 1 1} {ir_out ir_out out 5 2} } clock clock assign {debug.controlledBy {link_2} } moduleassign {debug.virtualInterface.link_2 {debug.endpointLink {fabric sld index 3} } } } } </td>
        </tr>
        <tr>
         <td class="parametername">EXAMPLE</td>
@@ -210,10 +313,10 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_jtagpins"> </a>
+  <a name="module_alt_sld_fab_jtagpins"> </a>
   <div>
    <hr/>
-   <h2>jtagpins</h2>altera_jtag_pins_bridge v14.1
+   <h2>alt_sld_fab_jtagpins</h2>altera_jtag_pins_bridge v15.0
    <br/>
    <br/>
    <br/>
@@ -241,19 +344,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_sldfabric"> </a>
+  <a name="module_alt_sld_fab_sldfabric"> </a>
   <div>
    <hr/>
-   <h2>sldfabric</h2>altera_sld_jtag_hub v14.1
+   <h2>alt_sld_fab_sldfabric</h2>altera_sld_jtag_hub v15.0
    <br/>
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
       <td class="neighbor" rowspan="4">
-       <a href="#module_jtagpins">jtagpins</a>
+       <a href="#module_alt_sld_fab_jtagpins">alt_sld_fab_jtagpins</a>
       </td>
       <td class="from">clock&#160;&#160;</td>
-      <td class="main" rowspan="11">sldfabric</td>
+      <td class="main" rowspan="19">alt_sld_fab_sldfabric</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clock</td>
@@ -268,8 +371,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td></td>
       <td class="from">clock_0&#160;&#160;</td>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_splitter">splitter</a>
+      <td class="neighbor" rowspan="12">
+       <a href="#module_alt_sld_fab_splitter">alt_sld_fab_splitter</a>
       </td>
      </tr>
      <tr>
@@ -287,6 +390,46 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="to">&#160;&#160;node_0</td>
      </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">clock_1&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;clock_1</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">node_1&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;node_1</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">clock_2&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;clock_2</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">node_2&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;node_2</td>
+     </tr>
      <tr style="height:6px">
       <td></td>
      </tr>
@@ -295,7 +438,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="from">ident&#160;&#160;</td>
       <td class="neighbor" rowspan="2">
-       <a href="#module_ident">ident</a>
+       <a href="#module_alt_sld_fab_ident">alt_sld_fab_ident</a>
       </td>
      </tr>
      <tr>
@@ -318,15 +461,15 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">SETTINGS</td>
-        <td class="parametervalue">{mfr_code 110 type_code 3 version 1 instance 0 ir_width 5 prefer_host {} } </td>
+        <td class="parametervalue">{mfr_code 110 type_code 3 version 1 instance 0 ir_width 5 prefer_host {} } {mfr_code 110 type_code 3 version 1 instance 1 ir_width 5 prefer_host {} } {mfr_code 110 type_code 3 version 1 instance 2 ir_width 5 prefer_host {} } </td>
        </tr>
        <tr>
         <td class="parametername">COUNT</td>
-        <td class="parametervalue">1</td>
+        <td class="parametervalue">3</td>
        </tr>
        <tr>
         <td class="parametername">N_SEL_BITS</td>
-        <td class="parametervalue">1</td>
+        <td class="parametervalue">2</td>
        </tr>
        <tr>
         <td class="parametername">N_NODE_IR_BITS</td>
@@ -334,7 +477,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">NODE_INFO</td>
-        <td class="parametervalue">00001000000110000110111000000000</td>
+        <td class="parametervalue">000010000001100001101110000000100000100000011000011011100000000100001000000110000110111000000000</td>
        </tr>
        <tr>
         <td class="parametername">COMPILATION_MODE</td>
@@ -379,19 +522,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_ident"> </a>
+  <a name="module_alt_sld_fab_ident"> </a>
   <div>
    <hr/>
-   <h2>ident</h2>altera_connection_identification_hub v14.1
+   <h2>alt_sld_fab_ident</h2>altera_connection_identification_hub v15.0
    <br/>
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
       <td class="neighbor" rowspan="2">
-       <a href="#module_sldfabric">sldfabric</a>
+       <a href="#module_alt_sld_fab_sldfabric">alt_sld_fab_sldfabric</a>
       </td>
       <td class="from">ident&#160;&#160;</td>
-      <td class="main" rowspan="2">ident</td>
+      <td class="main" rowspan="2">alt_sld_fab_ident</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;ident_0</td>
@@ -407,7 +550,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <table>
        <tr>
         <td class="parametername">DESIGN_HASH</td>
-        <td class="parametervalue">41ce206ae383ce9b1763</td>
+        <td class="parametervalue">b8829dd7aae0c53eeb07</td>
        </tr>
        <tr>
         <td class="parametername">COUNT</td>
@@ -439,7 +582,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   <table class="blueBar">
    <tr>
     <td class="l">generation took 0.01 seconds</td>
-    <td class="r">rendering took 0.03 seconds</td>
+    <td class="r">rendering took 0.05 seconds</td>
    </tr>
   </table>
  </body>

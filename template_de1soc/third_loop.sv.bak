@@ -1,0 +1,81 @@
+/* third_loop: FSM Used to compute third loop of algorithm.
+ *
+ * The FSM operates using START/FINISH protocol to implement the following logic
+ * 
+ * i = 0, j=0
+ * for k = 0 to message_length-1 { // message_length is 32 in our implementation
+ *   i = i+1
+ *   j = j+s[i]
+ *   swap values of s[i] and s[j]
+ *   f = s[ (s[i]+s[j]) ]
+ *   decrypted_output[k] = f xor encrypted_input[k] // 8 bit wide XOR function
+ * }
+ * TODO: write explenations about variables used
+ * Where s defines in-memory, and s[i]/s[j] is address i/j of memory
+ */
+
+
+
+module third_loop(
+                  input logic clk,
+                  input logic start,
+                  input logic [7:0] s_ram_q,
+                  input logic [7:0] e_rom_q,
+                  output logic d_wren,
+                  output logic [7:0] s_address,
+                  output logic [7:0] d_address,
+                  output logic [7:0] e_address,
+                  output logic [7:0] d_data,
+                  output logic [7:0] count,
+                  output logic [5:0] state,
+                  output logic finish
+                 );
+
+parameter IDLE           = 6'b00000_1;
+parameter COMPUTE_I      = 6'b00001_0; // COMPUTE_I state increments i every new loop cycle
+parameter REQUEST_READ_I = 6'b00010_0; // REQUEST_READ_I state sets address to read from S-RAM
+parameter WAIT_I_DATA    = 6'b00011_0; // WAIT_I_DATA state waits for data requested to S-RAM to be delivered
+parameter FINISH         = 6'b11111_1; //     
+
+//logic [5:0] state;
+logic [31:0] k;
+logic [31:0] i;
+logic [31:0] j;
+
+assign finish = state[0];
+
+//logic [2:0] count;
+
+always_ff @(posedge clk) begin
+    case(state)
+        IDLE: if(start)
+                state <= COMPUTE_I;
+              else begin
+                state <= IDLE;
+                k = 32'b0;
+                i = 32'b0;
+                j = 32'b0;
+                count = 8'b0;
+              end
+        COMPUTE_I: begin
+                    i <= (i + 1);
+                    state <= REQUEST_READ_I;
+                   end
+        REQUEST_READ_I: begin
+                        s_address <= i;
+                        state <= WAIT_I_DATA;
+                        end
+        WAIT_I_DATA: begin
+                        if(s_ram_q == 168)
+                         state <= FINISH;
+                        else begin
+                         count <= count + 1;
+                         state <= WAIT_I_DATA;    
+                        end
+                     end
+        FINISH: state <= FINISH;
+        default: state <= IDLE;
+    endcase
+end
+
+endmodule

@@ -11,14 +11,17 @@ module ksa (
             output logic [6:0] HEX5
            );
 
-    parameter IDLE           = 5'b000_00;
-    parameter CHECK_SRAM     = 5'b110_00;
-    parameter INIT_SRAM      = 5'b001_01;
-    parameter WAIT_SRAM_DONE = 5'b010_00;
-    parameter CHECK_LOOPER   = 5'b101_00;
-    parameter INIT_LOOPER    = 5'b011_10;
-    parameter WAIT_LOOPER    = 5'b111_00;
-    parameter FINISH         = 5'b100_00;
+    parameter IDLE           = 7'b0000_000;
+    parameter CHECK_SRAM     = 7'b0110_000;
+    parameter INIT_SRAM      = 7'b0001_001;
+    parameter WAIT_SRAM_DONE = 7'b0010_000;
+    parameter CHECK_LOOPER   = 7'b0101_000;
+    parameter INIT_LOOPER    = 7'b0011_010;
+    parameter WAIT_LOOPER    = 7'b0111_000;
+    parameter CHECK_3_LOOP   = 7'b1000_000;
+    parameter INIT_3_LOOP    = 7'b1001_100;
+    parameter WAIT_3_LOOP    = 7'b1010_000;   
+    parameter FINISH         = 7'b1111_000;
    
     logic clk;
     logic reset_n;
@@ -30,7 +33,7 @@ module ksa (
     assign reset_n = KEY[3];
 
     
-    logic [4:0] state;
+    logic [6:0] state;
    
 
     // S-RAM init and signals
@@ -41,12 +44,14 @@ module ksa (
     logic [7:0] s_q;
 
     // D-RAM init and signals
+    d_memory memory_3(.address(d_address),.clock(clk),.data(d_data),.wren(d_wren),.q(d_q));
     logic [7:0] d_q;
     logic [7:0] d_address;
     logic d_wren;
     logic [7:0] d_data;
 
     // E-ROM init and signals
+    e_memory memory_2(.address(e_address), .clock(clk), .q(e_q));
     logic [7:0] e_q;
     logic [7:0] e_address;
     
@@ -65,25 +70,31 @@ module ksa (
     logic looper_wren;
     logic start_second_loop;
     logic finish_second_loop;
-    logic [23:0] secret_key = 24'b00000000_00000010_01001001; 
+    logic [23:0] secret_key = 24'b00000000_00000011_11111111; 
+
+    // Third Loop debug signals
+    logic [7:0] count;
+    logic [7:0] count2;
 
 
     // Third Loop init and signals
-    third_loop loop_3(.clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data));
+    third_loop loop_3(.read_data_e(count2), .f(count), .clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data), .s_data(third_loop_s_data), .s_wren(third_loop_s_wren));
     logic start_third_loop;
     logic finish_third_loop;
     logic third_loop_d_wren;
+    logic third_loop_s_wren;
     logic [7:0] third_loop_s_address;
     logic [7:0] third_loop_d_address;
     logic [7:0] third_loop_e_address;
     logic [7:0] third_loop_d_data;
+    logic [7:0] third_loop_s_data;
 
 
 
 
     // TODO: Remove debuf signals and algorithms
 
-    assign LEDR[7:0] = 8'b0;
+    assign LEDR[7:0] = count2;
     
     SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
 
@@ -91,6 +102,7 @@ module ksa (
     // Link start writter trigger to state output index 0
     assign start_writter       = state[0];
     assign start_second_loop   = state[1];
+    assign start_third_loop    = state[2];
     //TODO: Control SRAM init to only run one time
 	always_ff @(posedge clk) begin
         case(state)
@@ -136,6 +148,36 @@ module ksa (
 								state <= WAIT_LOOPER;
                             end 
                             else 
+                                state <= CHECK_3_LOOP;
+                         end
+            CHECK_3_LOOP: begin
+                            if(finish_third_loop)
+                                state <= INIT_3_LOOP;
+                            else
+                                state <= CHECK_3_LOOP;
+                          end
+            INIT_3_LOOP: begin
+                            s_address <= third_loop_s_address;
+                            s_wren <= third_loop_s_wren;
+                            s_data <= third_loop_s_data;
+                            e_address <= third_loop_e_address;
+                            d_address <= third_loop_d_address;
+                            d_wren <= third_loop_d_wren;
+                            d_data <= third_loop_d_data;
+                            state <= WAIT_3_LOOP;
+                         end
+            WAIT_3_LOOP: begin
+                            if(!finish_third_loop) begin
+                                s_address <= third_loop_s_address;
+                                s_wren <= third_loop_s_wren;
+                                s_data <= third_loop_s_data;
+                                e_address <= third_loop_e_address;
+                                d_address <= third_loop_d_address;
+                                d_wren <= third_loop_d_wren;
+                                d_data <= third_loop_d_data;
+                                state     <= WAIT_3_LOOP;
+                            end
+                            else
                                 state <= FINISH;
                          end
             FINISH: state <= FINISH;           

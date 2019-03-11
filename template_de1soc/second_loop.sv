@@ -21,24 +21,24 @@ module second_loop (
                    output logic [7:0] address
                   );
 
-    parameter IDLE                = 7'b00000_10; 
-    parameter REQUEST_SRAM_READ   = 7'b00001_00; 
-    parameter READ_SRAM           = 7'b00010_00;
-    parameter COMPUTE_MOD         = 7'b00011_00;
-    parameter COMPUTE_SECRET_ADDR = 7'b00100_00;
-    parameter COMPUTE_J           = 7'b00101_00;
-    parameter REQUEST_SRAM_READ_J = 7'b00110_00;
-    parameter READ_SRAM_J         = 7'b00111_00;
-    parameter PRE_WRITE_J         = 7'b01000_00;
-    parameter WRITE_J             = 7'b01001_01;
-    parameter PRE_WRITE_I         = 7'b01010_00;
-    parameter WRITE_I             = 7'b01011_01;
-    parameter COMPARE_INDX        = 7'b01100_00;
-    parameter FINISH              = 7'b01101_10;
-	 parameter WAIT_1              = 7'b01110_00;
-	 parameter WAIT_2              = 7'b01111_00;
-    parameter WAIT_1_J            = 7'b10000_00;
-	 parameter WAIT_2_J            = 7'b10001_00;
+    parameter IDLE                = 7'b00000_10; // IDLE wait for start signal
+    parameter REQUEST_SRAM_READ   = 7'b00001_00; // REQUEST_SRAM_READ state sets address to read from S-RAM
+    parameter READ_SRAM           = 7'b00010_00; // READ_SRAM state stores value read from S-RAM data_read_i register
+    parameter COMPUTE_MOD         = 7'b00011_00; // COMPUTE_MOD state computed modulus operation for line 2 of algorithm
+    parameter COMPUTE_SECRET_ADDR = 7'b00100_00; // COMPUTE_SECRET_ADDR state selects 8 out of 24 bits from secret key depending on mod operation
+    parameter COMPUTE_J           = 7'b00101_00; // COMPUTE_J states computes value of j 
+    parameter REQUEST_SRAM_READ_J = 7'b00110_00; // REQUEST_SRAM_READ_J state sets address to read from S-RAM
+    parameter READ_SRAM_J         = 7'b00111_00; // READ_SRAM_J state stores value read from S-RAM data_read_j register
+    parameter PRE_WRITE_J         = 7'b01000_00; // PRE_WRITE_J state sets address and data to be written to S-RAM
+    parameter WRITE_J             = 7'b01001_01; // WRITE_J sets wren flag to perform write operation to S-RAM
+    parameter PRE_WRITE_I         = 7'b01010_00; // PRE_WRITE_I state sets address and data to be written to S-RAM
+    parameter WRITE_I             = 7'b01011_01; // WRITE_I state sets wren flag to perform write operation to S-RAM
+    parameter COMPARE_INDX        = 7'b01100_00; // COMPARE_INDX state compares the current loop count, to stop at 256
+	 parameter WAIT_1              = 7'b01101_00; // WAIT_1 state waits for S-RAM reading operation 
+	 parameter WAIT_2              = 7'b01110_00; // WAIT_2 state waits for S-RAM reading operation 
+    parameter WAIT_1_J            = 7'b01111_00; // WAIT_1_J state waits for S-RAM reading operation 
+	 parameter WAIT_2_J            = 7'b10000_00; // WAIT_2_J state waits for S-RAM reading operation 
+    parameter FINISH              = 7'b11111_10; // Trigger finish signal and finish FSM
 
 
     logic [7:0] state;
@@ -61,7 +61,7 @@ module second_loop (
                     end
                     else begin
                         state <= IDLE;
-                        i <= 9'b0;
+                        i <= 8'b0;
                         j <= 8'b0;
                     end
                   end
