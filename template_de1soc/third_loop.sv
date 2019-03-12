@@ -10,7 +10,7 @@
  *   f = s[ (s[i]+s[j]) ]
  *   decrypted_output[k] = f xor encrypted_input[k] // 8 bit wide XOR function
  * }
- * TODO: write explenations about variables used
+ * TODO: write explanations about variables used
  * Where s defines in-memory, and s[i]/s[j] is address i/j of memory
  */
 
@@ -30,6 +30,7 @@ module third_loop(
                   output logic [7:0] s_data,
                   output logic [7:0] read_data_e,
                   output logic [7:0] f,
+						output logic valid,
                   output logic finish
                  );
 
@@ -85,6 +86,7 @@ always_ff @(posedge clk) begin
                 i = 8'b0;
                 count = 8'b0;
                 j = 8'b0;
+					 valid = 1'b1;
               end
         COMPUTE_I: begin
                     i <= (i + 1);
@@ -157,8 +159,15 @@ always_ff @(posedge clk) begin
                      state <= WRITE_D;
                      end
         WRITE_D: begin
-                 state <= CHECK_INDX;
-                 k <= k + 1;
+					  if((d_data >= 8'd97 && d_data <= 8'd122) || d_data == 8'd32) begin
+							state <= CHECK_INDX;
+							k <= k + 1;
+						end
+						else begin
+							valid <= 1'b0;
+							state <= FINISH;
+						end
+                 
                  end
         CHECK_INDX: begin
                     if(k == 32)
@@ -166,7 +175,7 @@ always_ff @(posedge clk) begin
                     else
                      state <= COMPUTE_I;
                     end
-       FINISH: state <= FINISH;
+       FINISH: state <= IDLE;
        default: state <= IDLE;
     endcase
 end

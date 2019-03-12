@@ -20,7 +20,8 @@ module ksa (
     parameter WAIT_LOOPER    = 7'b0111_000;
     parameter CHECK_3_LOOP   = 7'b1000_000;
     parameter INIT_3_LOOP    = 7'b1001_100;
-    parameter WAIT_3_LOOP    = 7'b1010_000;   
+    parameter WAIT_3_LOOP    = 7'b1010_000;
+	 parameter FAILED_FINISH  = 7'b1100_000;
     parameter FINISH         = 7'b1111_000;
    
     logic clk;
@@ -70,7 +71,7 @@ module ksa (
     logic looper_wren;
     logic start_second_loop;
     logic finish_second_loop;
-    logic [23:0] secret_key = 24'b00000000_00000011_11111111; 
+    logic [23:0] secret_key = 24'b0;//24'b00000000_00000011_11111111; 
 
     // Third Loop debug signals
     logic [7:0] count;
@@ -78,23 +79,25 @@ module ksa (
 
 
     // Third Loop init and signals
-    third_loop loop_3(.read_data_e(count2), .f(count), .clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data), .s_data(third_loop_s_data), .s_wren(third_loop_s_wren));
+    third_loop loop_3(.read_data_e(count2), .f(count), .clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data), .s_data(third_loop_s_data), .s_wren(third_loop_s_wren), .valid(valid));
     logic start_third_loop;
     logic finish_third_loop;
     logic third_loop_d_wren;
     logic third_loop_s_wren;
+	 logic valid;
     logic [7:0] third_loop_s_address;
     logic [7:0] third_loop_d_address;
     logic [7:0] third_loop_e_address;
     logic [7:0] third_loop_d_data;
     logic [7:0] third_loop_s_data;
-
-
-
+	 
+	 
 
     // TODO: Remove debuf signals and algorithms
 
-    assign LEDR[7:0] = count2;
+	 logic [7:0] finishing_sign;
+    //assign LEDR[7:0] = finishing_sign;
+	 assign LEDR[7:0] = secret_key[12:5];
     
     SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
 
@@ -103,6 +106,7 @@ module ksa (
     assign start_writter       = state[0];
     assign start_second_loop   = state[1];
     assign start_third_loop    = state[2];
+	 assign start_bf            = state[3];
     //TODO: Control SRAM init to only run one time
 	always_ff @(posedge clk) begin
         case(state)
@@ -129,6 +133,7 @@ module ksa (
                                     state <= CHECK_LOOPER;
                             end
             CHECK_LOOPER: begin
+									 if(secret_key == 24'b1111111111) state <= FAILED_FINISH;
                             if(finish_second_loop)
                                 state <= INIT_LOOPER;
                             else
@@ -167,20 +172,33 @@ module ksa (
                             state <= WAIT_3_LOOP;
                          end
             WAIT_3_LOOP: begin
-                            if(!finish_third_loop) begin
-                                s_address <= third_loop_s_address;
-                                s_wren <= third_loop_s_wren;
-                                s_data <= third_loop_s_data;
-                                e_address <= third_loop_e_address;
-                                d_address <= third_loop_d_address;
-                                d_wren <= third_loop_d_wren;
-                                d_data <= third_loop_d_data;
-                                state     <= WAIT_3_LOOP;
-                            end
-                            else
-                                state <= FINISH;
+									 if(!valid) begin
+										secret_key <= secret_key + 1;
+										state <= CHECK_LOOPER;
+									 end
+									 else begin
+										 if(!finish_third_loop) begin
+											  s_address <= third_loop_s_address;
+											  s_wren <= third_loop_s_wren;
+											  s_data <= third_loop_s_data;
+											  e_address <= third_loop_e_address;
+											  d_address <= third_loop_d_address;
+											  d_wren <= third_loop_d_wren;
+											  d_data <= third_loop_d_data;
+											  state     <= WAIT_3_LOOP;
+										 end
+										 else begin
+											  state <= FINISH;
+										 end
+									  end
                          end
-            FINISH: state <= FINISH;           
+				FAILED_FINISH: begin
+										state <= FAILED_FINISH;
+										finishing_sign = 8'b10000000;
+									end
+            FINISH: begin 
+							state <= FINISH; finishing_sign = 8'b00000001;
+						  end
             default: state <= IDLE;
         endcase
 	end
