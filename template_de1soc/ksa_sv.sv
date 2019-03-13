@@ -96,10 +96,15 @@ module ksa (
     // TODO: Remove debuf signals and algorithms
 
 	 logic [7:0] finishing_sign;
-    //assign LEDR[7:0] = finishing_sign;
-	 assign LEDR[7:0] = secret_key[12:5];
+    assign LEDR[7:0] = finishing_sign;
+	 //assign LEDR[7:0] = secret_key[12:5];
     
-    SevenSegmentDisplayDecoder mod (.nIn(nIn), .ssOut(ssOut));
+    SevenSegmentDisplayDecoder mod0 (.nIn(secret_key[3:0]), .ssOut(HEX0));
+	 SevenSegmentDisplayDecoder mod1 (.nIn(secret_key[7:4]), .ssOut(HEX1));
+	 SevenSegmentDisplayDecoder mod2 (.nIn(secret_key[11:8]), .ssOut(HEX2));
+	 SevenSegmentDisplayDecoder mod3 (.nIn(secret_key[15:12]), .ssOut(HEX3));
+	 SevenSegmentDisplayDecoder mod4 (.nIn(secret_key[19:16]), .ssOut(HEX4));
+	 SevenSegmentDisplayDecoder mod5 (.nIn(secret_key[23:20]), .ssOut(HEX5));
 
 
     // Link start writter trigger to state output index 0
@@ -133,11 +138,15 @@ module ksa (
                                     state <= CHECK_LOOPER;
                             end
             CHECK_LOOPER: begin
-									 if(secret_key == 24'b1111111111) state <= FAILED_FINISH;
-                            if(finish_second_loop)
-                                state <= INIT_LOOPER;
-                            else
-                                state <= CHECK_LOOPER;
+									 if(secret_key == {{10{1'b0}},{14{1'b1}}}) begin
+										state <= FAILED_FINISH;
+									 end
+									 else begin
+										 if(finish_second_loop)
+											  state <= INIT_LOOPER;
+										 else
+											  state <= CHECK_LOOPER;
+									 end
                          end
             INIT_LOOPER: begin
 				                s_address <= looper_address;
@@ -172,11 +181,6 @@ module ksa (
                             state <= WAIT_3_LOOP;
                          end
             WAIT_3_LOOP: begin
-									 if(!valid) begin
-										secret_key <= secret_key + 1;
-										state <= CHECK_LOOPER;
-									 end
-									 else begin
 										 if(!finish_third_loop) begin
 											  s_address <= third_loop_s_address;
 											  s_wren <= third_loop_s_wren;
@@ -188,9 +192,14 @@ module ksa (
 											  state     <= WAIT_3_LOOP;
 										 end
 										 else begin
+											if(!valid) begin
+												secret_key <= secret_key + 1;
+												state <= CHECK_SRAM;
+											end
+											else begin
 											  state <= FINISH;
+											end
 										 end
-									  end
                          end
 				FAILED_FINISH: begin
 										state <= FAILED_FINISH;
