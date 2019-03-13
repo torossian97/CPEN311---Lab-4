@@ -34,28 +34,28 @@ module second_loop (
     parameter PRE_WRITE_I         = 7'b01010_00; // PRE_WRITE_I state sets address and data to be written to S-RAM
     parameter WRITE_I             = 7'b01011_01; // WRITE_I state sets wren flag to perform write operation to S-RAM
     parameter COMPARE_INDX        = 7'b01100_00; // COMPARE_INDX state compares the current loop count, to stop at 256
-	 parameter WAIT_1              = 7'b01101_00; // WAIT_1 state waits for S-RAM reading operation 
-	 parameter WAIT_2              = 7'b01110_00; // WAIT_2 state waits for S-RAM reading operation 
+	parameter WAIT_1              = 7'b01101_00; // WAIT_1 state waits for S-RAM reading operation 
+	parameter WAIT_2              = 7'b01110_00; // WAIT_2 state waits for S-RAM reading operation 
     parameter WAIT_1_J            = 7'b01111_00; // WAIT_1_J state waits for S-RAM reading operation 
-	 parameter WAIT_2_J            = 7'b10000_00; // WAIT_2_J state waits for S-RAM reading operation 
+	parameter WAIT_2_J            = 7'b10000_00; // WAIT_2_J state waits for S-RAM reading operation 
     parameter FINISH              = 7'b11111_10; // Trigger finish signal and finish FSM
 
 
     logic [7:0] state;
 
-    logic [7:0] data_read_i;
-    logic [7:0] data_read_j;
-    logic [7:0] secret_address;
-    logic [7:0] i;
-    logic [7:0] j;
+    logic [7:0] data_read_i; //data at i
+    logic [7:0] data_read_j; //data at j
+    logic [7:0] secret_address; //secret_address (a byte of the secret key)
+    logic [7:0] i; //memory address i
+    logic [7:0] j; //memory address j
     logic [7:0] mod_op;
 
-    assign wren   = state[0];
-    assign finish = state[1];
+    assign wren   = state[0]; //write enable
+    assign finish = state[1]; //finish flag (for start-finish protocol)
 
     always_ff @(posedge clk) begin
         case (state)
-            IDLE: begin
+            IDLE: begin //wait for start to trigger machine/reset all values
                     if (start == 1'b1) begin
                         state <= REQUEST_SRAM_READ;
                     end
@@ -65,22 +65,22 @@ module second_loop (
                         j <= 8'b0;
                     end
                   end
-            REQUEST_SRAM_READ: begin
+            REQUEST_SRAM_READ: begin //assign values to output address for memory to pick up and fetch from
                                 address <= i[7:0];
                                 data    <= 1'b0;
                                 state   <= READ_SRAM; 
                                end
-            READ_SRAM: state <= WAIT_1;
-				WAIT_1: state<= WAIT_2;
-				WAIT_2: begin
+            READ_SRAM: state <= WAIT_1; // wait for memory to come back
+				WAIT_1: state<= WAIT_2; //still waiting for memory to come back (2 clock cyles total)
+				WAIT_2: begin //data is back, assign the RAM's data to our internal wire
 						  state <= COMPUTE_MOD;
             		  data_read_i <= s_ram_data_out;
 						  end           
-            COMPUTE_MOD: begin
+            COMPUTE_MOD: begin // perform the operations shown in the handout
                            mod_op <= i % 8'b00000011;
                            state <= COMPUTE_SECRET_ADDR; 
 								 end
-            COMPUTE_SECRET_ADDR: begin
+            COMPUTE_SECRET_ADDR: begin //based on modulo output, select the correct part of the secret key for address to be swapped with
                                     if (mod_op == 8'b00000000)
                                        secret_address <= secret_key[23:16];
                                     else if(mod_op == 8'b00000001)
@@ -89,45 +89,45 @@ module second_loop (
                                        secret_address <= secret_key[7:0];
                                     state <= COMPUTE_J;
                                  end
-            COMPUTE_J: begin
+            COMPUTE_J: begin //make address j equal to the below line, using the secret key as the key
                             j <= j + data_read_i + secret_address;
                             state <= REQUEST_SRAM_READ_J;
                        end
-            REQUEST_SRAM_READ_J: begin
+            REQUEST_SRAM_READ_J: begin //request to read from said memory address
                                     address <= j;
                                     data    <= 1'b0;
                                     state   <= READ_SRAM_J; 
                                  end
-            READ_SRAM_J: state <= WAIT_1_J;
+            READ_SRAM_J: state <= WAIT_1_J; //a couple of wait cycles, as above
 				WAIT_1_J: state <= WAIT_2_J;
-				WAIT_2_J: begin
+				WAIT_2_J: begin //write j into the data j internal wire
 						  state <= PRE_WRITE_J;
                     data_read_j <= s_ram_data_out;
 						  end  
-            PRE_WRITE_J: begin
+            PRE_WRITE_J: begin //put the value of i into the address of j
                             address <= j;
                             data    <= data_read_i;
                             state   <= WRITE_J;
                          end
-            WRITE_J: begin
+            WRITE_J: begin // initiate the write (waiting for it to be completed)
                         state <= PRE_WRITE_I;
                      end
-            PRE_WRITE_I: begin
+            PRE_WRITE_I: begin //put the value of j into the address of i
                             address <= i;
                             data    <= data_read_j;
                             state   <= WRITE_I;
                          end
-            WRITE_I: begin
+            WRITE_I: begin //initiate the write
                             state <= COMPARE_INDX;
                             i     <= i + 1'b1;  
                      end
-            COMPARE_INDX: begin
+            COMPARE_INDX: begin //swap completed, either restart until every address is done, or finish the machine
                           if (i == 0)
                             state <= FINISH;
                         else
                             state <= REQUEST_SRAM_READ;
                           end
-            FINISH: begin
+            FINISH: begin //done, go back to idle
                         state <= IDLE;
                     end
             default: state <= IDLE;
