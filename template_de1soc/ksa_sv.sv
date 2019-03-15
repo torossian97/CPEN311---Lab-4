@@ -79,7 +79,7 @@ module ksa (
 
 
     // Third Loop init and signals
-    third_loop loop_3(.read_data_e(count2), .f(count), .clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data), .s_data(third_loop_s_data), .s_wren(third_loop_s_wren), .valid(valid));
+    third_loop loop_3(.clk(clk), .start(start_third_loop), .finish(finish_third_loop), .s_ram_q(s_q), .e_rom_q(e_q), .d_wren(third_loop_d_wren), .s_address(third_loop_s_address), .d_address(third_loop_d_address), .e_address(third_loop_e_address), .d_data(third_loop_d_data), .s_data(third_loop_s_data), .s_wren(third_loop_s_wren), .valid(valid));
     logic start_third_loop;
     logic finish_third_loop;
     logic third_loop_d_wren;
@@ -138,7 +138,7 @@ module ksa (
                                     state <= CHECK_LOOPER;
                             end
             CHECK_LOOPER: begin
-									 if(secret_key == {{10{1'b0}},{14{1'b1}}}) begin
+									 if(secret_key == {{1'b0},{1'b1},{22{1'b0}}}) begin
 										state <= FAILED_FINISH;
 									 end
 									 else begin

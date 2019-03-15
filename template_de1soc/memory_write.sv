@@ -19,16 +19,16 @@
                         output logic finish
                       );
    
-    parameter IDLE = 2'b10;
-    parameter WRITTING = 2'b01;
+    parameter IDLE = 2'b10;     // IDLE waits for start signal
+    parameter WRITTING = 2'b01; // Writes sequence to memory
 
     logic [1:0] state;
-    logic [7:0] count = 1'b0;
-    logic [7:0] q;
-    assign wren = state[0];
-    assign finish = state[1];
-    assign address = count;
-    assign data = count;
+    logic [7:0] count = 1'b0;   // Register to keep number of time written so far
+    
+    assign wren = state[0];     // Link wren to state bit 0
+    assign finish = state[1];   // Link finish output to state bit 1
+    assign address = count;     // The address being writted to S-RAM is always count
+    assign data = count;        // The data being written to S-RAM is always count
 
     always_ff @(posedge clk) begin
         case(state)
